@@ -1,2 +1,3 @@
 venv/
-token.env
+.env
+v2.py
