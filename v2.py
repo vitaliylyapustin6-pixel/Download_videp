@@ -14,8 +14,7 @@ dp = Dispatcher()
 #Обрабатывает команду старт 
 @dp.message(CommandStart())
 async def start(message: types.Message):
-    await message.answer("Привет, этот бот умеет переводить с руского на англиский")
-    await message.answer("Бот так же удаляет текст через 4 секунды:)")
+    await message.answer("Привет, этот бот умеет переводить с руского на англиский:)")
 #Перевод текста 
 @dp.message()
 async def s(message: types.Message):
