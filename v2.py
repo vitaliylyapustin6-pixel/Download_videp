@@ -23,9 +23,7 @@ async def s(message: types.Message):
     tt = message.text
     t1 = t.translate(tt)
     await message.answer(t1)
-    await asyncio.sleep(4)
-    await message.delete()
-    await message.delete(t1)
+    
 
 #Запуск бота
 async def main():
