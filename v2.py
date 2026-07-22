@@ -6,7 +6,7 @@ import os
 import time
 from translate import Translator
 #Подключаем Токен
-load_dotenv("token.env")
+load_dotenv()
 tokeen = os.getenv("TOKEN")
 bot = Bot(token=tokeen)
 
