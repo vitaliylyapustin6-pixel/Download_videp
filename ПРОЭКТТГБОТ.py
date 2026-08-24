@@ -32,11 +32,11 @@ load_dotenv()
 TOKEN = os.getenv("TOKEN")
 bot = Bot(token=TOKEN)
 #Роутер
-user_r = Router()
+router = Router()
 dp = Dispatcher()
 
 #Делаем дикаротор/фенцию для обработки Start
-@user_r.message(CommandStart())
+@router.message(CommandStart())
 async def start(message: Message):
     #Сохраняем ID в переменую
     user_id = message.from_user.id
@@ -45,12 +45,13 @@ async def start(message: Message):
     b = InlineKeyboardBuilder()
     b.button(text='Население Одессы',callback_data='1')
     b.button(text='Население Киев',callback_data='2')
+    b.button(text='Население Shanghai',callback_data='3')
 
     #Отправляем пользывателю первое сообщение
     await message.answer(f'Hello {message.from_user.first_name},тут ты можешь посомтреть насчиление людей',reply_markup=b.as_markup())
 
 #Первый каллбек для Одессы
-@user_r.callback_query(F.data == '1')
+@router.callback_query(F.data == '1')
 async def b1(call: CallbackQuery):
     await call.answer()
     #Подключаем Нашее gg.py
@@ -59,10 +60,17 @@ async def b1(call: CallbackQuery):
     await call.message.answer(res)
 
 #Второй каллбек для Киева
-@user_r.callback_query(F.data == '2')
+@router.callback_query(F.data == '2')
 async def b1(call: CallbackQuery):
     await call.answer()
     info = selff("Kyiv")
+    res = await info.get()
+    await call.message.answer(res)
+
+@router.callback_query(F.data == '3')
+async def b1(call: CallbackQuery):
+    await call.answer()
+    info = selff("Shanghai")
     res = await info.get()
     await call.message.answer(res)
 
@@ -72,7 +80,7 @@ async def main():
     logging.basicConfig(level=logging.INFO)
     
     # Подключаем роутер к диспетчеру
-    dp.include_router(user_r)
+    dp.include_router(router)
     
     # Сбрасываем накопленные сообщения во время оффлайна и запускаем бота
     await bot.delete_webhook(drop_pending_updates=True)

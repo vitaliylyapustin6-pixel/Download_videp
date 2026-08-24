@@ -16,12 +16,15 @@ class selff:
 async def main():
     R = selff('Odesa')
     R1 = selff('Kyiv')
+    R2 = selff('Shanghai')
 
     res = await R.get()
     res1 = await R1.get()
+    res2 = await R2.get()
 
     print(res)
     print(res1)
+    print(res2)
 
 
 asyncio.run(main())
