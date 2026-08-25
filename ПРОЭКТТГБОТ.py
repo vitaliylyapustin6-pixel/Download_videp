@@ -25,6 +25,8 @@ import aiosqlite
 
 from sqll import sql
 
+from country import gg
+
 from gg import selff
 
 #Подключение Токена
@@ -34,6 +36,30 @@ bot = Bot(token=TOKEN)
 #Роутер
 router = Router()
 dp = Dispatcher()
+
+# Делаем FSM для показа страны если напишешь город
+class Req(StatesGroup):
+    city = State()
+
+# Обрабатываем команду 
+@router.message(F.text == '/city')
+async def sity1(message: Message, state: FSMContext):
+    await state.set_state(Req.city)
+    await message.answer('Введите название города')
+# Передаем переменую в другой файл работа
+@router.message(Req.city)
+async def city2(message: Message, state: FSMContext):
+    # Ловим сообщение от пользывателя
+    city0 = message.text
+    # Передаем в наш файл
+    obj = gg(city0)
+    # Запускаем функию с логикой/забераем данные полученые от туда
+    res = await obj.city1()
+
+    await message.answer(res)
+    # Отчищаем для повторного запуска
+    await state.clear()
+
 
 #Делаем дикаротор/фенцию для обработки Start
 @router.message(CommandStart())
