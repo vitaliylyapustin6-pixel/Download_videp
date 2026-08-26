@@ -20,13 +20,11 @@ from aiogram.types import (
 )
 # Удобные билдеры для динамических клавиатур
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
-
-import aiosqlite
-
+# База данных
 from sqll import sql
-
+# Город = Страна
 from country import gg
-
+# Показывает сколько людей в городе 
 from gg import selff
 
 #Подключение Токена
@@ -49,16 +47,21 @@ async def sity1(message: Message, state: FSMContext):
 # Передаем переменую в другой файл работа
 @router.message(Req.city)
 async def city2(message: Message, state: FSMContext):
-    # Ловим сообщение от пользывателя
+    # Ловим сообщение от пользывателя и ложим в переменую
     city0 = message.text
+    # Проверка на цыфры 
+    if city0.isalpha():
     # Передаем в наш файл
-    obj = gg(city0)
+        obj = gg(city0)
     # Запускаем функию с логикой/забераем данные полученые от туда
-    res = await obj.city1()
-
-    await message.answer(res)
+        res = await obj.city1()
+    # Выводим Страну
+        await message.answer(res)
     # Отчищаем для повторного запуска
-    await state.clear()
+        await state.clear()
+    # Обработка ошыбки
+    else:
+        await message.answer('Введите только буквы')
 
 
 #Делаем дикаротор/фенцию для обработки Start
@@ -114,5 +117,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
 

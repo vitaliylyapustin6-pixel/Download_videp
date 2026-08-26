@@ -6,10 +6,17 @@ class gg:
         self.url = 'https://geocoding-api.open-meteo.com/v1/search'
 
     async def city1(self):
+        # Создаем сеанс
         async with aiohttp.ClientSession() as s:
+            # Запрос на сервер
             async with s.get(url=self.url,params={'name':self.city0,'count':3}) as res:
-                data = await res.json()
-                c1 = data['results'][0]['country']
-                return f'Страна: {c1}'
-
+                # Проверка если города не будет 
+                try:
+                    # Получаем данные с сервера и конвертируем в json формат
+                    data = await res.json()
+                    # Достем значение которое нам надо
+                    c1 = data['results'][0]['country']
+                    return f'Страна: {c1}'
+                except Exception as e:
+                    return f'Мы не смогли найти страну'
 
