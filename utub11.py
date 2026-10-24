@@ -13,13 +13,14 @@ from dotenv import load_dotenv
 import os
 import asyncio
 
-conn = psycopg2.connect(dbname='utub1',user='postgres',password='20222',host='localhost')
-
 load_dotenv()
 
 token = os.getenv('TOKEN')
+db_token = os.getenv('DB_TOKEN')
 bot = Bot(token=token)
 dp = Dispatcher()
+
+conn = psycopg2.connect(dbname='utub1',user='postgres',password=db_token,host='localhost')
 
 class Req(StatesGroup):
     ytdl = State()
