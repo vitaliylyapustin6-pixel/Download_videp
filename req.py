@@ -13,13 +13,14 @@ from dotenv import load_dotenv
 import os
 import asyncio
 
-conn = psycopg2.connect(dbname='utub1',user='postgres',password='20222',host='localhost')
-
 load_dotenv()
 
 token = os.getenv('TOKEN')
+db_token = os.gotenv('DB_TOKEN')
 bot = Bot(token=token)
 dp = Dispatcher()
+
+conn = psycopg2.connect(dbname='utub1',user='postgres',password=db_token,host='localhost')
 
 class Req(StatesGroup):
     ytdl = State()
@@ -31,7 +32,7 @@ async def start(message: Message, state: FSMContext):
     message_id = message.from_user.id
     cursor.execute('SELECT * FROM id_users WHERE id = %s;',(message_id,))
     user = cursor.fetchone()
-
+    #gg
     if user:
         await message.answer(f'Привет {message.from_user.first_name}\nСкинь Link на видео)')
     else:
